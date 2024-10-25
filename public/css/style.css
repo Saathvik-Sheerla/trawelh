@@ -5,8 +5,15 @@ body {
     min-height: 100vh;
 }
 
-.container {
+.container-fluid {
+    padding: 0 0.8rem 0 0.8rem !important;
     flex: 1;
+}
+
+/* input */
+
+.form-control {
+    background-color: #efeeee !important;
 }
 
 /* Navbar */
@@ -16,13 +23,39 @@ body {
     background-color: rgba(255, 255, 255, 0.98);
 }
 
-.fa-solid {
-    font-size: 2.5rem;
+.trawelh-logo {
+    margin-right: 0.5rem;
+    font-size: 2.25rem;
     color: #ff0000;
 }
 
 .nav-link {
     color: #111111 !important;
+}
+
+.nav-search-btn i{
+    display: inline;
+    margin: 0 0.25rem 0 0 !important; 
+}
+
+.nav-search-input{
+    font-size: 0.9rem !important;
+    border-radius: 25px !important;
+    background-color: wheat !important;
+}
+
+.nav-search-btn{
+    margin: auto;
+    padding: 0.3rem 1rem 0.3rem 1rem !important;
+    border-radius: 25px !important;
+    color: white !important;
+    background-color: red !important;
+    border: 1px solid red !important;
+    font-size: 0.85rem !important;
+}
+
+.nav-search-btn:hover{
+    background-color: red !important;
 }
 
 /* Footer */
@@ -81,16 +114,25 @@ body {
 }
 
 .card-title-text {
+    padding: 0 0 0 0.2rem;
+    text-align: start;
+    font-size: 0.8rem !important;
     font-weight: 500;
     color: #111111;
     margin: 0;
 }
 
+.card-price{
+    padding: 0.1rem 0 0 0.2rem;
+    text-align: start;
+    font-size: 0.75rem;
+}
+
 .card img {
-    border-radius: 7%;
+    border-radius: 6%;
     width: 100% !important;
     object-fit: cover !important;
-    height: 20rem;
+    height: 15.5rem;
 }
 
 .card-link {
@@ -108,12 +150,6 @@ body {
 .card-img-overlay:hover {
     opacity: 0.2;
     background-color: aliceblue;
-}
-
-/* input */
-
-.form-control {
-    background-color: #efeeee !important;
 }
 
 /* show page */
@@ -158,3 +194,5 @@ body {
     width: 90vh;
     margin: 1rem 0 10rem 0;
 }
+
+

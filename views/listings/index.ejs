@@ -1,10 +1,153 @@
 <% layout('layouts/boilerplate.ejs') %>
+
+<style>
+    #filters{
+        margin: 0.5rem 0 0 0.5rem; 
+        background-color: white !important;
+    }
+
+    .filter{
+        margin: 0.5rem 2.25rem 0 0;
+        text-align: center;
+        opacity: 0.7;
+    }
+
+    .filter i{
+        font-size: 1.1rem;
+    }
+
+    .filter i:hover{
+        color: red;
+    }
+
+    .filter:hover{
+        cursor: pointer;
+        opacity: 1;
+    }
+
+    .filter p{
+        font-size: 0.65rem;
+    }
+
+    .taxes-info{
+        display: none;
+    }
+
+    .taxes-switch-form{
+        font-size: 0.85rem;
+        height: 3rem;
+        align-items: center !important;
+        justify-items: center;
+        margin: 0 0 0.7rem 0;
+        padding: 0.2rem 0.6rem 0.2rem 0.6rem !important; 
+        border: 1px solid grey;
+        border-radius: 12px !important;
+    }
+
+    .taxes-switch-form:hover{
+        cursor: pointer;
+    }
+    
+
+    .nav-search-div{
+        margin: 0 0 0.5rem 1.25rem;
+        align-items: center;
+    }
+
+    .nav-search{
+        width: 12rem;
+        height: 2.25rem;
+    }
+
+</style>
+
 <body>
+
+        <nav class="navbar navbar-expand-lg bg-body-tertiary" id="filters">
+            <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <div class="filter">
+                            <div><i class="fa-solid fa-fire"></i></div>
+                            <p>trending</p>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="filter">
+                            <div><i class="fa-solid fa-bed"></i></div>
+                            <p>rooms</p>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="filter">
+                            <div><i class="fa-solid fa-mountain-city"></i></div>
+                            <p>iconic-cities</p>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="filter">
+                            <div><i class="fa-solid fa-person-hiking"></i></div>
+                            <p>mountains</p>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="filter">
+                            <div><i class="fa-brands fa-fort-awesome"></i></div>
+                            <p>castles</p>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="filter">
+                            <div><i class="fa-solid fa-person-swimming"></i></div>
+                            <p>amazing pools</p>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="filter">
+                            <div><i class="fa-solid fa-cow"></i></div>
+                            <p>farms</p>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="filter">
+                            <div><i class="fa-solid fa-gopuram"></i></div>
+                            <p>temples</p>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="filter">
+                            <div><i class="fa-solid fa-igloo"></i></div>
+                            <p>arctic</p>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="filter">
+                            <div><i class="fa-solid fa-campground"></i></div>
+                            <p>camping</p>
+                        </div>
+                    </li>
+                </ul>
+                <form class="d-flex taxes-switch-form">
+                    <div class="form-check form-switch form-check-reverse ">
+                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckReverse">
+                        <label class="form-check-label" for="flexSwitchCheckReverse">Prices after taxes</label>
+                    </div>
+                </form>
+            
+            </div>
+            </div>
+        </nav>
+
+
     <div class="index-container">
         
         <% for(let listing of alllistings){ %>
             <a class="card-link" href="/listings/<%= listing._id %>" >
-                <div class="card" style="width: 17.5rem; margin: 1.3rem;">
+                <div class="card" style="width: 18.5rem; margin: 1rem 0.3rem 0.3rem 0;">
                     <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image">
                         <div class="card-img-overlay">
                         </div>
@@ -13,7 +156,8 @@
                             <%=listing.title%>
                         </P>
                         <p class="card-price">
-                            <b>&#8377; <%= listing.price.toLocaleString("en-IN") %></b> / night
+                            <b>&#8377; <%= listing.price.toLocaleString("en-IN") %></b> / day
+                            <i class="taxes-info"> &nbsp &nbsp +18% gst</i>
                         </p>
                     </div>
                 </div>
@@ -21,3 +165,29 @@
         <%}%>
     </div>
 </body>
+
+<script>
+    let taxSwitch = document.getElementById('flexSwitchCheckReverse');
+
+    taxSwitch.addEventListener('click', ()=>{
+        let taxInfo = document.getElementsByClassName('taxes-info');
+        for(let info of taxInfo){
+            if(info.style.display != 'inline'){
+                info.style.display = 'inline';
+            } else {
+                info.style.display = 'none';
+            }
+        }
+    });
+
+    let searchIcon = document.getElementById('search-icon');
+    let searchBtn = document.getElementById('search-icon-btn');
+
+    searchBtn.addEventListener('onHover', ()=>{
+        if(searchIcon.style.color != 'white'){
+            searchIcon.style.color = 'white';
+        } else {
+            searchIcon.style.color = 'red';
+        }
+    })
+</script>
