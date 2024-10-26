@@ -1,66 +1,5 @@
 <% layout('layouts/boilerplate.ejs') %>
 
-<style>
-    #filters{
-        margin: 0.5rem 0 0 0.5rem; 
-        background-color: white !important;
-    }
-
-    .filter{
-        margin: 0.5rem 2.25rem 0 0;
-        text-align: center;
-        opacity: 0.7;
-    }
-
-    .filter i{
-        font-size: 1.1rem;
-    }
-
-    .filter i:hover{
-        color: red;
-    }
-
-    .filter:hover{
-        cursor: pointer;
-        opacity: 1;
-    }
-
-    .filter p{
-        font-size: 0.65rem;
-    }
-
-    .taxes-info{
-        display: none;
-    }
-
-    .taxes-switch-form{
-        font-size: 0.85rem;
-        height: 3rem;
-        align-items: center !important;
-        justify-items: center;
-        margin: 0 0 0.7rem 0;
-        padding: 0.2rem 0.6rem 0.2rem 0.6rem !important; 
-        border: 1px solid grey;
-        border-radius: 12px !important;
-    }
-
-    .taxes-switch-form:hover{
-        cursor: pointer;
-    }
-    
-
-    .nav-search-div{
-        margin: 0 0 0.5rem 1.25rem;
-        align-items: center;
-    }
-
-    .nav-search{
-        width: 12rem;
-        height: 2.25rem;
-    }
-
-</style>
-
 <body>
 
         <nav class="navbar navbar-expand-lg bg-body-tertiary" id="filters">
@@ -156,8 +95,8 @@
                             <%=listing.title%>
                         </P>
                         <p class="card-price">
-                            <b>&#8377; <%= listing.price.toLocaleString("en-IN") %></b> / day
-                            <i class="taxes-info"> &nbsp &nbsp +18% gst</i>
+                            <b id="index-listing-price">&#8377; <%= listing.price.toLocaleString("en-IN") %></b> / day
+                            <i class="taxes-info"> &nbsp &nbsp inclu. 18% gst</i>
                         </p>
                     </div>
                 </div>
@@ -166,7 +105,36 @@
     </div>
 </body>
 
+
+
+
 <script>
+    const taxRate = 0.18; // 18% tax rate
+    let isTaxIncluded = false; // Initial state: taxes not included
+
+    function togglePrices() {
+        const listings = document.querySelectorAll('#index-listing-price');
+
+        listings.forEach(listing => {
+        const basePrice = parseFloat(listing.textContent.replace('₹', '').replace(',', ''));
+
+        if (isTaxIncluded) {
+            // Calculate price without tax
+            const priceWithoutTax = basePrice / (1 + taxRate);
+            listing.textContent = `₹ ${priceWithoutTax.toFixed(0)}`;
+        } else {
+            // Calculate price with tax
+            const priceWithTax = basePrice + (basePrice * taxRate);
+            listing.textContent = `₹ ${priceWithTax.toFixed(0)}`;
+        }
+        });
+
+        isTaxIncluded = !isTaxIncluded; // Toggle the state
+    }
+
+    const toggleSwitch = document.getElementById('flexSwitchCheckReverse');
+    toggleSwitch.addEventListener('change', togglePrices);
+    
     let taxSwitch = document.getElementById('flexSwitchCheckReverse');
 
     taxSwitch.addEventListener('click', ()=>{
@@ -180,14 +148,4 @@
         }
     });
 
-    let searchIcon = document.getElementById('search-icon');
-    let searchBtn = document.getElementById('search-icon-btn');
-
-    searchBtn.addEventListener('onHover', ()=>{
-        if(searchIcon.style.color != 'white'){
-            searchIcon.style.color = 'white';
-        } else {
-            searchIcon.style.color = 'red';
-        }
-    })
 </script>
