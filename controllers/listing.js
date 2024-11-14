@@ -1,4 +1,6 @@
 const Listing = require('../models/listing.js');
+const mbxClient = require('@mapbox/mapbox-sdk/services/geocoding.js');
+const geocodingClient = mbxClient( { accessToken: process.env.MAP_TOKEN  } );
 
 module.exports.index = async (req,res)=>{
         const alllistings = await Listing.find({});
@@ -84,6 +86,8 @@ module.exports.updateListing = async (req,res)=>{
             listing.image = { url, filename };
             await listing.save();
         }
+
+        console.log(listing.geometry);
 
         req.flash("update", "Listing info Updated!");
         res.redirect(`/listings/${id}`);

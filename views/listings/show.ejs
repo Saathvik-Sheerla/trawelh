@@ -1,5 +1,11 @@
 <% layout('layouts/boilerplate.ejs') %>
 
+<script>
+	const mapToken = "<%= process.env.MAP_TOKEN %>";
+    const coordinates = <%- JSON.stringify(listing.geometry.coordinates) %>;
+</script>
+
+
 <body>
 
     <div class="showpage-container ">
@@ -16,6 +22,7 @@
                 <uL style="margin: 1.1rem; padding: 2px; line-height: 32px; width: 100%;">
                     <li><%= listing.location %></li>
                     <li><%= listing.country %></li>
+                    <li><%= listing.geometry %></li>
                     <li>
                         <div>
                             <p class="card-text " style=" font-weight: 500;"><%= listing.description %></p>
@@ -40,77 +47,84 @@
                 
             </div>
         </div>
+
+
+        <div style="width: 50%; display: inline; margin: 0 5rem 0 0;">
+            <h4>Where you'll be</h4>
+            <div id="map"></div>
+        </div>
+
+
+        <!-- <div> -->
+            <% if(currUser) { %>
+                <div class="showpage-review-form " style="margin: 1rem 0 0 2rem; ">
+                    <h4>Leave a Review</h4>
+                    <form method="post" action="/listings/<%=listing._id%>/reviews" style="margin: 2rem 0 0 0;" class="needs-validation" novalidate >
+    
+                    <div>
+                        <fieldset class="starability-growRotate">
+                            <legend style="font-size: 1.1rem;">Rating:</legend>
+                            <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+                            <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                            <label for="first-rate1" title="Terrible">1 star</label>
+                            <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                            <label for="first-rate2" title="Not good">2 stars</label>
+                            <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                            <label for="first-rate3" title="Average">3 stars</label>
+                            <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                            <label for="first-rate4" title="Very good">4 stars</label>
+                            <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                            <label for="first-rate5" title="Amazing">5 stars</label>
+                        </fieldset>
+                    </div>
+    
+                    <div>
+                        <label for="comment" class="form-label" style="margin: 1.5rem 0 1rem 0;">Comment</label>
+                        <textarea name="review[comment]" id="comment" rows="5" cols="30" class="form-control mb-2" style="width: auto;" >This is great!!</textarea>
+                    </div>
+    
+                    <div>
+                        <button type="submit" class="btn btn-primary mt-3 mb-3" >save</button>
+                    </div>
+    
+                    </form>
+                </div>
+            <% } %>
+            
+            
+            <% if(listing.reviews.length > 0) { %>
+                <div class="reviews">
+                    <h4>Reviews</h4>
+                    <ul style="line-height: 2rem; margin: 2rem 0 2rem 0; display: flex; flex-wrap: wrap; justify-content: center;">
+                        <% for(let review of listing.reviews) { %>
+                            <% let stars = review.rating %>
+                            <li style="list-style: none; border-radius: 2%; box-shadow: 2px black; margin: 0 0.8rem 0.8rem 0; font-size: 1.1rem; padding: 1rem;
+                            box-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.2); display: flex; justify-content: space-between;
+                            ">
+                                <div>
+                                    <div style="font-size: 1rem; width: fit-content; height: fit-content; margin: 1rem 0 0 0;">@<%= review.author.username %></div>
+                                    <div>
+                                        <p class="starability-result" data-rating="<%= review.rating %>"></p>
+                                        <%= review.comment %>
+                                    </div>
+                                </div>
+                                <form method="post" action="/listings/<%=listing._id%>/reviews/<%= review._id %>?_method=delete" style="display: inline;">
+                                    <button type="submit" class="btn btn-danger" style="display: inline-block !important; font-size: 0.8rem ; margin: 0 0 0 1rem; "
+                                    >delete</button>
+                                </form>
+                            </li>
+                        <% } %>
+                    </ul>
+                </div>
+            <% } %>
+    
+        <!-- </div> -->
+
     </div>
     
-    <div>
-        <% if(currUser) { %>
-            <div class="showpage-review-form " style="margin: 1rem 0 0 2rem;">
-                <h3>Leave a Review</h3>
-                <form method="post" action="/listings/<%=listing._id%>/reviews" style="margin: 2rem 0 0 2rem;" class="needs-validation" novalidate >
-
-                <div>
-                    <fieldset class="starability-growRotate">
-                        <legend>Rating:</legend>
-                        <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
-                        <input type="radio" id="first-rate1" name="review[rating]" value="1" />
-                        <label for="first-rate1" title="Terrible">1 star</label>
-                        <input type="radio" id="first-rate2" name="review[rating]" value="2" />
-                        <label for="first-rate2" title="Not good">2 stars</label>
-                        <input type="radio" id="first-rate3" name="review[rating]" value="3" />
-                        <label for="first-rate3" title="Average">3 stars</label>
-                        <input type="radio" id="first-rate4" name="review[rating]" value="4" />
-                        <label for="first-rate4" title="Very good">4 stars</label>
-                        <input type="radio" id="first-rate5" name="review[rating]" value="5" />
-                        <label for="first-rate5" title="Amazing">5 stars</label>
-                    </fieldset>
-                </div>
-
-                <div>
-                    <label for="comment" class="form-label" style="margin: 1.5rem 0 1rem 0;">Comment</label>
-                    <textarea name="review[comment]" id="comment" rows="5" cols="30" class="form-control mb-2">This is great!!</textarea>
-                </div>
-
-                <div>
-                    <button type="submit" class="btn btn-primary mt-3 mb-3" >save</button>
-                </div>
-
-                </form>
-            </div>
-        <% } %>
-        
-        
-        <% if(listing.reviews.length > 0) { %>
-            <div class="mt-5 mb-3">
-                <h3>Reviews</h3>
-                <ul style="line-height: 2rem; margin: 2rem 0 2rem 0; display: flex; flex-wrap: wrap; justify-content: center;">
-                    <% for(let review of listing.reviews) { %>
-                        <% let stars = review.rating %>
-                        <li style="list-style: none; border-radius: 2%; box-shadow: 2px black; margin: 0 0.8rem 0.8rem 0; font-size: 1.1rem; padding: 1rem;
-                        box-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.2); display: flex; justify-content: space-between;
-                        ">
-                            <div>
-                                <div style="font-size: 1rem; width: fit-content; height: fit-content; margin: 1rem 0 0 0;">@<%= review.author.username %></div>
-                                <div>
-                                    <p class="starability-result" data-rating="<%= review.rating %>"></p>
-                                    <%= review.comment %>
-                                </div>
-                            </div>
-                            <form method="post" action="/listings/<%=listing._id%>/reviews/<%= review._id %>?_method=delete" style="display: inline;">
-                                <button type="submit" class="btn btn-danger" style="display: inline-block !important; font-size: 0.8rem ; margin: 0 0 0 1rem; "
-                                >delete</button>
-                            </form>
-                        </li>
-                    <% } %>
-                </ul>
-            </div>
-        <% } %>
-
-    </div>
 
 </body>
 
 
 
-
-
-    
+<script src="/scripts/map.js" ></script>

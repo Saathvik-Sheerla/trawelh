@@ -220,15 +220,16 @@ body {
 .showpage-img {
     margin: 1rem 2rem 1rem 8rem;
     width: auto !important;
-    height: 65% !important;
+    height: 70% !important;
     border-radius: 5% !important;
 }
 
 .showpage-img-card {
-    margin: 0 0 3rem 0 !important;
+    margin: 0 0 1rem 0 !important;
 }
 
 .showpage-container {
+    margin: 0 4rem 0 4rem;
     display: flex;
     flex-wrap: wrap;
 }
@@ -251,11 +252,18 @@ body {
     margin: 2rem;
 }
 
+
+/* reviews */
+.reviews{
+    margin: 2.5rem 1rem 5rem 0;
+}
+
+
 /* Map */
 #map {
-    height: 400px;
-    width: 90vh;
-    margin: 1rem 0 10rem 0;
+    height: 350px;
+    width: 100%;
+    margin: 2rem 0 4rem 0;
 }
 
 
