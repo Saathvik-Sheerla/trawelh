@@ -2,7 +2,7 @@
 
 <script>
 	const mapToken = "<%= process.env.MAP_TOKEN %>";
-    const coordinates = <%- JSON.stringify(listing.geometry.coordinates) %>;
+    let coordinates = <%- JSON.stringify(listing.geometry.coordinates) %>;
 </script>
 
 
@@ -13,16 +13,12 @@
         <div class="showpage-text" style="width: 40%;">
             <div class="showpage-title mt-2">
                 <h2><%= listing.title %></h2>
-                <i class="fa-solid fa-star" style="color: gold;" ></i>
-                    <h4 class="d-inline" ><%= listing.owner.username %></h4>
-                <i class="fa-solid fa-star" style="color: gold;" ></i>
             </div>
     
             <div class="showpage-details" style="width: 50%;">
                 <uL style="margin: 1.1rem; padding: 2px; line-height: 32px; width: 100%;">
                     <li><%= listing.location %></li>
                     <li><%= listing.country %></li>
-                    <li><%= listing.geometry %></li>
                     <li>
                         <div>
                             <p class="card-text " style=" font-weight: 500;"><%= listing.description %></p>
@@ -44,7 +40,11 @@
         <div class="showpage-body col-8">
             <div class="card showpage-img-card" >
                 <img src="<%= listing.image.url %>" class="card-img-top showpage-img" alt="listing_image">
-                
+                <div style="margin: 0 0 0 9rem;">
+                    <% if(listing.owner.contact) { %>
+                        <p style="display: inline-block; font-size: 0.85rem; " >Contact &nbsp; <b><%= listing.owner.username %></b> (owner) &nbsp; at </p><b style="display: inline-block; margin: 0 0 0 0.7rem;" > <%= listing.owner.contact %> </b>
+                    <% } %>
+                </div>
             </div>
         </div>
 

@@ -78,7 +78,27 @@ module.exports.renderEditForm = async (req,res)=>{
 
 module.exports.updateListing = async (req,res)=>{
         let {id} = req.params;
-        let listing = await Listing.findByIdAndUpdate(id, {...req.body.listing} );
+
+        let listing = {...req.body.listing};
+
+        // console.log(listing);
+
+        let locationResponse = await geocodingClient
+            .forwardGeocode({
+                query: listing.location+", "+listing.country,
+                limit: 1,
+            })
+            .send();
+
+        if(locationResponse.statusCode != 200){
+            req.flash('errorr', 'unable to find your location, try to be more broad');
+            res.redirect('/listings/new');
+        } else {
+            listing.geometry = locationResponse.body.features[0].geometry;
+        }
+
+        listing = await Listing.findByIdAndUpdate(id, {...listing} );
+        // console.log(listing);
 
         if(typeof req.file!=='undefined'){
             let url = req.file.path;
@@ -87,7 +107,7 @@ module.exports.updateListing = async (req,res)=>{
             await listing.save();
         }
 
-        console.log(listing.geometry);
+        // console.log(listing);
 
         req.flash("update", "Listing info Updated!");
         res.redirect(`/listings/${id}`);
