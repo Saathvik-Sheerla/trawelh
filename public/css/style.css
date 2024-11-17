@@ -264,6 +264,33 @@ body {
 }
 
 
+
+/* user */
+
+.user-profile{
+    width: fit-content;
+    margin: 3rem auto auto auto;
+    padding: 2rem;
+    box-shadow: 8px 10px 10px rgba(0,0,0,0.45);
+    border-radius: 10px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.user-profile:hover{
+    transform: scale(1.03);
+}
+
+.user-profile-row{
+    display: flex;
+    justify-content: space-between;
+}
+
+.user-profile p{
+    display: inline-block;
+    margin: 0 4rem 0 0;
+}
+
+
 /* reviews */
 .reviews{
     margin: 2.5rem 1rem 5rem 0;

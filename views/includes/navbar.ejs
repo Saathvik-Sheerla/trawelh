@@ -23,6 +23,9 @@
         </div>
 
         <div class="navbar-nav ms-auto">
+          <% if(currUser){ %>
+            <a class="nav-link" href="/profile"><i class="fa-solid fa-circle-user" style="color: red; font-size: 1.5rem; padding: 0.1rem 0.3rem 0 0;" ></i></a>
+          <% } %>
           <a class="nav-link" href="/listings/new">
             <b style="color: red; display: inline; font-size: 1rem;" >+</b>
             Reach
