@@ -23,6 +23,13 @@ body {
     background-color: rgba(255, 255, 255, 0.98);
 }
 
+.navbar-collapse{
+    display: flex;
+    flex-wrap: wrap;
+    background-color: rgba(255, 255, 255, 0.98);
+    z-index: 1;
+}
+
 .trawelh-logo {
     margin-right: 0.5rem;
     font-size: 2.25rem;
@@ -102,9 +109,13 @@ body {
 
 /* Index */
 
-#filters{
+#filters-nav{
     margin: 0.5rem 0 0 0.5rem; 
     background-color: white !important;
+}
+
+.filters li{
+    display: inline-block;
 }
 
 .filter{
